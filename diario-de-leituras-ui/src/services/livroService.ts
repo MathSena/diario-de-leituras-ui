@@ -14,3 +14,12 @@ export const getAllLivros = async (): Promise<Livro[]> => {
   const response = await axios.get<Livro[]>(API_URL)
   return response.data
 }
+
+// O 'Omit' cria um tipo novo que é igual ao 'Livro', mas sem os campos 'id' e 'reflexoes'.
+// Perfeito para o formulário de criação!
+export type LivroFormData = Omit<Livro, 'id' | 'reflexoes'>
+
+export const createLivro = async (livroData: LivroFormData): Promise<Livro> => {
+  const response = await axios.post<Livro>(API_URL, livroData)
+  return response.data
+}

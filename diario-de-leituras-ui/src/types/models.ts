@@ -26,3 +26,12 @@ export interface Livro {
   dataConclusao?: string
   reflexoes: Reflexao[] // Um livro pode ter uma lista de reflexões
 }
+
+export const STATUS_OPCOES = ['LISTA_DE_DESEJOS', 'LENDO', 'LIDO']
+export const CATEGORIA_OPCOES = [
+  'TECNICO',
+  'FICCAO',
+  'BIOGRAFIA',
+  'FILOSOFIA',
+  'AUTOAJUDA'
+]
