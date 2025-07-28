@@ -27,8 +27,8 @@ export interface Livro {
   reflexoes: Reflexao[] // Um livro pode ter uma lista de reflexões
 }
 
-export const STATUS_OPCOES = ['LISTA_DE_DESEJOS', 'LENDO', 'LIDO']
-export const CATEGORIA_OPCOES = [
+export const STATUS_OPCOES: Status[] = ['LISTA_DE_DESEJOS', 'LENDO', 'LIDO']
+export const CATEGORIA_OPCOES: Categoria[] = [
   'TECNICO',
   'FICCAO',
   'BIOGRAFIA',

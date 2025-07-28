@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { type Livro } from '../types/models' // Importamos nossa interface!
-// Importamos nossa interface!
+import { type Livro } from '../types/models'
 
 // A URL base da nossa API Quarkus
 const API_URL = 'http://localhost:8080/livros'
@@ -21,5 +20,18 @@ export type LivroFormData = Omit<Livro, 'id' | 'reflexoes'>
 
 export const createLivro = async (livroData: LivroFormData): Promise<Livro> => {
   const response = await axios.post<Livro>(API_URL, livroData)
+  return response.data
+}
+
+export const getLivroById = async (id: number): Promise<Livro> => {
+  const response = await axios.get<Livro>(`${API_URL}/${id}`)
+  return response.data
+}
+
+export const updateLivro = async (
+  id: number,
+  livroData: LivroFormData
+): Promise<Livro> => {
+  const response = await axios.put<Livro>(`${API_URL}/${id}`, livroData)
   return response.data
 }

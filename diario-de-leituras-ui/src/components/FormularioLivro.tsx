@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { type LivroFormData } from '../services/livroService'
-import { CATEGORIA_OPCOES, STATUS_OPCOES } from '../types/models'
+import {
+  type Categoria,
+  type Status,
+  CATEGORIA_OPCOES,
+  STATUS_OPCOES
+} from '../types/models' // Importe Categoria e Status
 
 // As propriedades que nosso formulário vai receber
 interface FormularioLivroProps {
@@ -16,17 +21,25 @@ const FormularioLivro = ({
 }: FormularioLivroProps) => {
   const [formData, setFormData] = useState<LivroFormData>(livroInicial)
 
+  // NOVA VERSÃO CORRIGIDA DA FUNÇÃO
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+
+    if (name === 'status') {
+      setFormData(prev => ({ ...prev, status: value as Status }))
+    } else if (name === 'categoria') {
+      setFormData(prev => ({ ...prev, categoria: value as Categoria }))
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }))
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault() // Impede o recarregamento da página
+    e.preventDefault()
     onSave(formData)
   }
 
@@ -57,7 +70,7 @@ const FormularioLivro = ({
         <select name="status" value={formData.status} onChange={handleChange}>
           {STATUS_OPCOES.map(opt => (
             <option key={opt} value={opt}>
-              {opt.replace('_', ' ')}
+              {opt.replace(/_/g, ' ')}
             </option>
           ))}
         </select>
