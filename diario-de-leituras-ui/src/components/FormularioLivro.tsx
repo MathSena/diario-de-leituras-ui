@@ -66,6 +66,15 @@ const FormularioLivro = ({
         />
       </div>
       <div>
+        <label>URL da Capa:</label>
+        <input
+          type="text"
+          name="capaUrl"
+          value={formData.capaUrl ?? ''}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
         <label>Status:</label>
         <select name="status" value={formData.status} onChange={handleChange}>
           {STATUS_OPCOES.map(opt => (

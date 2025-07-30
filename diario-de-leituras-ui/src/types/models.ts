@@ -25,6 +25,7 @@ export interface Livro {
   dataInicio?: string
   dataConclusao?: string
   reflexoes: Reflexao[] // Um livro pode ter uma lista de reflexões
+  capaUrl?: string
 }
 
 export const STATUS_OPCOES: Status[] = ['LISTA_DE_DESEJOS', 'LENDO', 'LIDO']
