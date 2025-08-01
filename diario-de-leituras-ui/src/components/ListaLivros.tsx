@@ -1,9 +1,9 @@
+// Arquivo: src/components/ListaLivros.tsx
 import { Link } from 'react-router-dom'
 import { useLivros } from '../hooks/useLivros'
 import { STATUS_OPCOES } from '../types/models'
 import { motion } from 'framer-motion'
 
-// Imports do Material-UI
 import {
   Container,
   Card,
@@ -15,14 +15,23 @@ import {
   Alert,
   Chip,
   Stack,
-  CardMedia
-  // O componente Grid não é mais necessário aqui
-} from '@mui/material'
+  CardMedia,
+  TextField
+} from '@mui/material' // Adicione TextField
 import AddIcon from '@mui/icons-material/Add'
+import SearchIcon from '@mui/icons-material/Search'
 
 const ListaLivros = () => {
-  const { loading, error, livrosFiltrados, filtroStatus, setFiltroStatus } =
-    useLivros()
+  // Pegamos as novas variáveis do nosso hook
+  const {
+    loading,
+    error,
+    livrosFiltrados,
+    filtroStatus,
+    setFiltroStatus,
+    termoBusca,
+    setTermoBusca
+  } = useLivros()
 
   if (loading) {
     return (
@@ -42,7 +51,6 @@ const ListaLivros = () => {
 
   return (
     <Container maxWidth="lg">
-      {}
       <Box
         sx={{
           display: 'flex',
@@ -64,8 +72,37 @@ const ListaLivros = () => {
         </Button>
       </Box>
 
-      <Box sx={{ mb: 4 }}>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+      {/* Caixa de Ferramentas: Busca e Filtros */}
+      <Box
+        sx={{
+          mb: 4,
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: 2
+        }}
+      >
+        {/* NOVO CAMPO DE BUSCA */}
+        <TextField
+          label="Buscar por Título ou Autor"
+          variant="outlined"
+          fullWidth
+          value={termoBusca}
+          onChange={e => setTermoBusca(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <SearchIcon
+                fontSize="small"
+                sx={{ mr: 1, color: 'text.secondary' }}
+              />
+            )
+          }}
+        />
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ flexWrap: 'wrap', gap: 1, alignItems: 'center' }}
+        >
+          {/* ... botões de filtro ... */}
           <Chip
             label="Todos"
             onClick={() => setFiltroStatus('TODOS')}
@@ -83,9 +120,14 @@ const ListaLivros = () => {
         </Stack>
       </Box>
 
+      {/* O resto do código permanece o mesmo, pois ele já usa 'livrosFiltrados' */}
+      <Typography variant="h6" component="h2" gutterBottom>
+        Resultados ({livrosFiltrados.length})
+      </Typography>
+
       {livrosFiltrados.length === 0 ? (
         <Typography>
-          Nenhum livro encontrado com o filtro selecionado.
+          Nenhum livro encontrado com os filtros aplicados.
         </Typography>
       ) : (
         <Box
@@ -100,7 +142,7 @@ const ListaLivros = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-              style={{ height: '100%' }} // Garante que a animação ocupe toda a altura
+              style={{ height: '100%' }}
             >
               <Card
                 sx={{
@@ -118,7 +160,16 @@ const ListaLivros = () => {
                   />
                 )}
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" component="div">
+                  <Typography
+                    variant="h6"
+                    component={Link}
+                    to={`/livro/${livro.id}`}
+                    sx={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      '&:hover': { color: 'primary.main' }
+                    }}
+                  >
                     {livro.titulo}
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">

@@ -1,37 +1,65 @@
-import axios from 'axios'
-import { type Livro } from '../types/models'
+import api from './api' // Importamos nossa instância central do Axios
+import { type Livro, type Reflexao } from '../types/models' // Corrigido: removemos o tipo com erro de digitação
 
-// A URL base da nossa API Quarkus
-const API_URL = 'http://localhost:8080/livros'
+// O 'Omit' cria um tipo novo que é igual ao 'Livro', mas sem os campos 'id' e 'reflexoes'.
+// Perfeito para o formulário de criação e edição!
+export type LivroFormData = Omit<Livro, 'id' | 'reflexoes'>
 
 /**
  * Busca todos os livros da API.
- * Retorna uma Promessa que, quando resolvida, contém um array de Livros.
  */
 export const getAllLivros = async (): Promise<Livro[]> => {
-  // Usamos axios.get<Livro[]> para que o TypeScript saiba o tipo da resposta
-  const response = await axios.get<Livro[]>(API_URL)
+  // Padronizado para usar 'api' e apenas o endpoint relativo.
+  const response = await api.get<Livro[]>('/livros')
   return response.data
 }
 
-// O 'Omit' cria um tipo novo que é igual ao 'Livro', mas sem os campos 'id' e 'reflexoes'.
-// Perfeito para o formulário de criação!
-export type LivroFormData = Omit<Livro, 'id' | 'reflexoes'>
-
-export const createLivro = async (livroData: LivroFormData): Promise<Livro> => {
-  const response = await axios.post<Livro>(API_URL, livroData)
-  return response.data
-}
-
+/**
+ * Busca um livro específico pelo seu ID.
+ */
 export const getLivroById = async (id: number): Promise<Livro> => {
-  const response = await axios.get<Livro>(`${API_URL}/${id}`)
+  const response = await api.get<Livro>(`/livros/${id}`)
   return response.data
 }
 
+/**
+ * Cria um novo livro.
+ */
+export const createLivro = async (livroData: LivroFormData): Promise<Livro> => {
+  const response = await api.post<Livro>('/livros', livroData)
+  return response.data
+}
+
+/**
+ * Atualiza um livro existente.
+ */
 export const updateLivro = async (
   id: number,
   livroData: LivroFormData
 ): Promise<Livro> => {
-  const response = await axios.put<Livro>(`${API_URL}/${id}`, livroData)
+  const response = await api.put<Livro>(`/livros/${id}`, livroData)
+  return response.data
+}
+
+/**
+ * Busca todas as reflexões de um livro específico pelo seu ID.
+ */
+export const getReflexoesByLivroId = async (
+  livroId: number
+): Promise<Reflexao[]> => {
+  const response = await api.get<Reflexao[]>(`/livros/${livroId}/reflexoes`)
+  return response.data
+}
+
+/**
+ * Adiciona uma nova reflexão a um livro específico.
+ */
+export const addReflexao = async (
+  livroId: number,
+  conteudo: string
+): Promise<Reflexao> => {
+  const response = await api.post<Reflexao>(`/livros/${livroId}/reflexoes`, {
+    conteudo
+  })
   return response.data
 }

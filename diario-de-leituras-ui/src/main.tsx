@@ -5,6 +5,7 @@ import EditarLivroPage from './pages/EditarLivroPage'
 import AdicionarLivroPage from './pages/AdicionarLivroPage.tsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import DetalhesLivroPage from './pages/DetalhesLivroPage.tsx'
 
 // Crie o roteador
 const router = createBrowserRouter([
@@ -16,7 +17,11 @@ const router = createBrowserRouter([
     path: '/adicionar', // A rota para adicionar um novo livro
     element: <AdicionarLivroPage />
   },
-  { path: '/livro/editar/:id', element: <EditarLivroPage /> }
+  { path: '/livro/editar/:id', element: <EditarLivroPage /> },
+  { path: '/', element: <App /> },
+  { path: '/adicionar', element: <AdicionarLivroPage /> },
+  { path: '/livro/editar/:id', element: <EditarLivroPage /> },
+  { path: '/livro/:id', element: <DetalhesLivroPage /> }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
