@@ -1,4 +1,3 @@
-// src/pages/EditarLivroPage.tsx
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import FormularioLivro from '../components/FormularioLivro'
@@ -7,9 +6,16 @@ import {
   updateLivro,
   type LivroFormData
 } from '../services/livroService'
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  CircularProgress
+} from '@mui/material'
 
 const EditarLivroPage = () => {
-  const { id } = useParams<{ id: string }>() // Pega o ID da URL
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [livro, setLivro] = useState<LivroFormData | null>(null)
   const [isSaving, setIsSaving] = useState(false)
@@ -31,7 +37,6 @@ const EditarLivroPage = () => {
         nota: livroData.nota ? Number(livroData.nota) : undefined
       }
       await updateLivro(Number(id), dadosParaSalvar)
-      alert('Livro atualizado com sucesso!')
       navigate('/')
     } catch (error) {
       console.error('Falha ao atualizar livro:', error)
@@ -42,18 +47,26 @@ const EditarLivroPage = () => {
   }
 
   if (!livro) {
-    return <p>Carregando dados do livro...</p>
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   return (
-    <div>
-      <h2>Editar Livro</h2>
-      <FormularioLivro
-        livroInicial={livro}
-        onSave={handleSave}
-        isSaving={isSaving}
-      />
-    </div>
+    <Container maxWidth="sm">
+      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Editar Livro
+        </Typography>
+        <FormularioLivro
+          livroInicial={livro}
+          onSave={handleSave}
+          isSaving={isSaving}
+        />
+      </Paper>
+    </Container>
   )
 }
 
