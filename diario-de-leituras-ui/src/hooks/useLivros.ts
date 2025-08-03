@@ -1,4 +1,3 @@
-// Arquivo: src/hooks/useLivros.ts
 import { useState, useEffect, useMemo } from 'react'
 import { type Livro, type Status } from '../types/models'
 import { getAllLivros } from '../services/livroService'
@@ -18,22 +17,17 @@ export const useLivros = () => {
   }, [])
 
   const livrosFiltrados = useMemo(() => {
-    return (
-      todosLivros
-        // 1. Primeiro, filtra por STATUS
-        .filter(livro => {
-          if (filtroStatus === 'TODOS') return true
-          return livro.status === filtroStatus
-        })
-        // 2. Depois, filtra o resultado pelo TERMO DE BUSCA
-        .filter(livro => {
-          const busca = termoBusca.toLowerCase()
-          return (
-            livro.titulo.toLowerCase().includes(busca) ||
-            livro.autor.toLowerCase().includes(busca)
-          )
-        })
-    )
+    return todosLivros
+      .filter(
+        livro => filtroStatus === 'TODOS' || livro.status === filtroStatus
+      )
+      .filter(livro => {
+        const busca = termoBusca.toLowerCase()
+        return (
+          livro.titulo.toLowerCase().includes(busca) ||
+          livro.autor.toLowerCase().includes(busca)
+        )
+      })
   }, [todosLivros, filtroStatus, termoBusca])
 
   return {

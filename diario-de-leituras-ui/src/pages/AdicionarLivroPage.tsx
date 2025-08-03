@@ -36,7 +36,7 @@ const AdicionarLivroPage = () => {
 
   return (
     <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+      <Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, mt: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Adicionar Novo Livro
         </Typography>

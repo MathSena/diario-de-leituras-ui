@@ -3,33 +3,41 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 
-// Importações
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material'
+
 import Layout from './components/Layout'
 import App from './App.tsx'
+import ListaLivros from './components/ListaLivros'
 import AdicionarLivroPage from './pages/AdicionarLivroPage.tsx'
 import EditarLivroPage from './pages/EditarLivroPage.tsx'
 import DetalhesLivroPage from './pages/DetalhesLivroPage.tsx'
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#f44336'
+    },
+    background: {
+      default: '#121212',
+      paper: '#1e1e1e'
+    }
+  }
+})
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />, // O Layout agora é o elemento pai de todas as rotas
+    element: <App />,
     children: [
       {
-        index: true, // A rota '/' (index) renderizará o App (ListaLivros)
-        element: <App />
-      },
-      {
-        path: 'adicionar',
-        element: <AdicionarLivroPage />
-      },
-      {
-        path: 'livro/editar/:id',
-        element: <EditarLivroPage />
-      },
-      {
-        path: 'livro/:id',
-        element: <DetalhesLivroPage />
+        element: <Layout />,
+        children: [
+          { index: true, element: <ListaLivros /> },
+          { path: 'adicionar', element: <AdicionarLivroPage /> },
+          { path: 'livro/editar/:id', element: <EditarLivroPage /> },
+          { path: 'livro/:id', element: <DetalhesLivroPage /> }
+        ]
       }
     ]
   }
@@ -37,6 +45,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 )

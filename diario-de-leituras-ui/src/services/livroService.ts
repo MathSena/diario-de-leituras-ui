@@ -1,38 +1,23 @@
-import api from './api' // Importamos nossa instância central do Axios
-import { type Livro, type Reflexao } from '../types/models' // Corrigido: removemos o tipo com erro de digitação
+import api from './api'
+import { type Livro, type Reflexao } from '../types/models'
 
-// O 'Omit' cria um tipo novo que é igual ao 'Livro', mas sem os campos 'id' e 'reflexoes'.
-// Perfeito para o formulário de criação e edição!
 export type LivroFormData = Omit<Livro, 'id' | 'reflexoes'>
 
-/**
- * Busca todos os livros da API.
- */
 export const getAllLivros = async (): Promise<Livro[]> => {
-  // Padronizado para usar 'api' e apenas o endpoint relativo.
   const response = await api.get<Livro[]>('/livros')
   return response.data
 }
 
-/**
- * Busca um livro específico pelo seu ID.
- */
 export const getLivroById = async (id: number): Promise<Livro> => {
   const response = await api.get<Livro>(`/livros/${id}`)
   return response.data
 }
 
-/**
- * Cria um novo livro.
- */
 export const createLivro = async (livroData: LivroFormData): Promise<Livro> => {
   const response = await api.post<Livro>('/livros', livroData)
   return response.data
 }
 
-/**
- * Atualiza um livro existente.
- */
 export const updateLivro = async (
   id: number,
   livroData: LivroFormData
@@ -41,9 +26,10 @@ export const updateLivro = async (
   return response.data
 }
 
-/**
- * Busca todas as reflexões de um livro específico pelo seu ID.
- */
+export const deleteLivro = async (id: number): Promise<void> => {
+  await api.delete(`/livros/${id}`)
+}
+
 export const getReflexoesByLivroId = async (
   livroId: number
 ): Promise<Reflexao[]> => {
@@ -51,9 +37,6 @@ export const getReflexoesByLivroId = async (
   return response.data
 }
 
-/**
- * Adiciona uma nova reflexão a um livro específico.
- */
 export const addReflexao = async (
   livroId: number,
   conteudo: string

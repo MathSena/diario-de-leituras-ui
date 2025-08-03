@@ -4,6 +4,8 @@ export type Categoria =
   | 'BIOGRAFIA'
   | 'FILOSOFIA'
   | 'AUTOAJUDA'
+  | 'CLASSICO'
+  | 'NAO_FICCAO'
 export type Status = 'LISTA_DE_DESEJOS' | 'LENDO' | 'LIDO'
 
 export interface Reflexao {
@@ -21,6 +23,7 @@ export interface Livro {
   nota?: number
   dataInicio?: string
   dataConclusao?: string
+  sinopse?: string
   reflexoes: Reflexao[]
   capaUrl?: string
 }
@@ -31,5 +34,7 @@ export const CATEGORIA_OPCOES: Categoria[] = [
   'FICCAO',
   'BIOGRAFIA',
   'FILOSOFIA',
-  'AUTOAJUDA'
+  'AUTOAJUDA',
+  'CLASSICO',
+  'NAO_FICCAO'
 ]
